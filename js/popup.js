@@ -7,11 +7,9 @@ $(document).ready(function(){
  		}
      	return false;
    	});
-
-   	//Add new row to the table
-	var i=0;
-   	$("#addBtn").click(function(){
-   		var inputVal = $("#inputAssig").val();
+   	var i=0;
+   	var addNewRow = (function() {
+   		var inputVal = $("#inputAssig").val().toUpperCase();
    		if (inputVal.length > 0) {
    			var placesLliures = 3;
    			var placesTotals = 40;
@@ -30,6 +28,13 @@ $(document).ready(function(){
       		toastr.error("El camp d'entrada està buit");
 
       	}
+   	});
+   	//Add new row to the table
+   	$("#addBtn").click(addNewRow);
+  	$("#assigForm").submit(function() {
+  		addNewRow();
+  		$("#inputAssig").val("");
+  		return false;
   	});
   	//Delete last row
   	$("#delBtn").click(function(){
@@ -39,3 +44,9 @@ $(document).ready(function(){
 		}
 	 });
 });
+
+window.onload = function(){
+	var inputAssig = document.getElementById ('inputAssig');
+  	inputAssig.focus();
+  	inputAssig.select();
+}
