@@ -47,6 +47,7 @@
 					<tr>
 						<th>#</th>
 						<th>Assignatura</th>
+						<th>Grup</th>
 						<th>Places lliures</th>
 						<th>Places totals</th>
 					</tr>
@@ -57,10 +58,13 @@
 			</table>
 			<form id="assigForm" class="form-inline">
 				<div class ="form-group">   
-					<input id="inputAssig" type="text" name="fname"
+					<input id="inputAssig" class="form-control" type="text" name="fname"
 							placeholder="Codi assignatura (p.e. IDI)" selected="selected">
-					<input id="inputGrup" type="number" min="20" max="99" name="sname" 
-					placeholder="Grup" selected="selected">
+					
+				</div>
+				<div class="col-xs-2 form-group">
+					<input id="inputGrup" class="form-control" type="number" min="20" max="99" name="sname" 
+					placeholder="Grup" size="4">
 				</div>
     			<input id="addBtn" type="button" class="btn btn-default" value="Afegir"/>
     			<input id="delBtn" type="button" class="btn btn-default" value="Eliminar"/>
