@@ -6,7 +6,11 @@ Chrome extension to make things easier for the students of UPC-FIB during the co
  + You can download the extension from here and add it to Chrome as an external source or,
  + you can just install it from this link: *no link currently :(*
 
-----
 ##Special thanks
  + [Toastr](https://github.com/CodeSeven/toastr)
  + [Chrome-Extension-Twitter-Bootstrap-3-Template](https://github.com/Ehesp/Chrome-Extension-Twitter-Bootstrap-3-Template)
+
+##Authors
+ + [Ricard Gascons](https://github.com/mindula/)
+ + [Pau Oliver](https://github.com/ghastgar)
+ 
