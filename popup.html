@@ -10,22 +10,23 @@
 		<!-- Scripts -->
 		<script src="js/jquery-2.0.3.min.js"></script>
 		<script src="js/bootstrap.min.js"></script>
-		<script src="js/popup.js"></script>
+		<script type="text/javascript" src="js/popup.js"></script>
 		
 		<!-- Cascading Style Sheets -->
 		<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
-		<link href="css/custom.css" rel="stylesheet" media="screen">		
+		<link href="css/custom.css" rel="stylesheet" media="screen">
+		
 	</head>
 	
 	<body>
 	
 		<nav class="navbar navbar-default" role="navigation">
 			<div class="navbar-header">
-				<a class="navbar-brand" href="#">Places lliures</a>
+					<a class="navbar-brand" href="#">Places lliures</a>
 			</div>
 			<div class="collapse navbar-collapse navbar-ex1-collapse">
 				<ul class="nav navbar-nav">
-					<li class="active">
+					<li>
 						<a href="http://www.fib.upc.edu/fib/estudiar-enginyeria-informatica/matricula/lliures/lliuresFS.html">Fase inicial</a>
 					</li>
 					<li>
@@ -39,7 +40,7 @@
 		</nav>
 		
 		<section>
-			<table class="table table-hover">
+			<table id="subjectsTable" class="table table-hover">
 				<thead>
 					<tr>
 						<th>#</th>
@@ -49,27 +50,16 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr>
-						<td>1</td>
-						<td>AC</td>
-						<td>3</td>
-						<td>40</td>
-					</tr>
-					<tr>
-						<td>2</td>
-						<td>A</td>
-						<td>10</td>
-						<td>30</td>
-					</tr>
-					<tr>
-						<td>3</td>
-						<td>IDI</td>
-						<td>0</td>
-						<td>12</td>
-					</tr>
+					<tr id='assig0'></tr>
 				</tbody>
 			</table>
+			<form class="form-inline">
+				<div class ="form-group">   
+					<input id="inputAssig" type="text" name="fname" class="form-control" placeholder="Sigles assignatura"><br>
+				</div>
+    			<button id="addBtn" type="button" class="btn btn-default">Afegir</button>
+    			<button id="delBtn" type="button" class="btn btn-default">Eliminar</button>
+			</form>
 		</section>
-		
 	</body>
 </html>
