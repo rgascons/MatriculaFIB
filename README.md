@@ -8,4 +8,5 @@ Chrome extension to make things easier for the students of UPC-FIB during the co
 
 ----
 ##Special thanks
+ + [Toastr](https://github.com/CodeSeven/toastr)
  + [Chrome-Extension-Twitter-Bootstrap-3-Template](https://github.com/Ehesp/Chrome-Extension-Twitter-Bootstrap-3-Template)

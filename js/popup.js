@@ -20,8 +20,16 @@ $(document).ready(function(){
     		//Avoiding duplicate IDs
     		if (!document.getElementById('assig' + (i+1)))
       			$('#subjectsTable').append('<tr id="assig'+(i+1)+'"></tr>');
+      			
       		i++; 
-   		}
+   		} else {
+   			toastr.options = {
+   				"newestOnTop": true,
+   				"positionClass": "toast-bottom-center"
+   			}
+      		toastr.error("El camp d'entrada està buit");
+
+      	}
   	});
   	//Delete last row
   	$("#delBtn").click(function(){
