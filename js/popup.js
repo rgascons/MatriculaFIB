@@ -1,7 +1,10 @@
 //Links inside the popup load in a new tab
 $(document).ready(function(){
    $('body').on('click', 'a', function(){
-     chrome.tabs.create({url: $(this).attr('href')});
+   	var hyperlink = $(this).attr('href')
+   	if (hyperlink !== "#") {
+     	chrome.tabs.create({url: hyperlink});
+ 	}
      return false;
    });
 });
