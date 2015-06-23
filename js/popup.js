@@ -7,8 +7,23 @@ $(document).ready(function(){
  		}
      	return false;
    	});
+   	//Number of elements
    	var i=0;
 
+   	//Get all data, if any
+   	chrome.storage.sync.get(null, function(items) {
+    	var allKeys = Object.keys(items);
+    	if(!jQuery.isEmptyObject(items)) {
+    		$.each(items, function(j, item) {
+    			$('#assig'+i).html("<td>"+ (i+1) +
+      				"<td>"+items[j].inputVal+"</td><td>"+items[j].grupVal+"</td><td>"+2+"</td><td>"+40+"</td>");
+    			$('#subjectsTable').append('<tr id="assig'+(i+1)+'"></tr>');
+    			i++;
+			})
+    	}
+	});
+
+   	//This function is called each time we add a new alement to the table
    	var addNewRow = (function() {
    		var inputVal = $("#inputAssig").val().toUpperCase();
    		var grupVal = $("#inputGrup").val();
@@ -19,7 +34,7 @@ $(document).ready(function(){
    			}
       		toastr.error("El camp d'entrada està buit");
       		return false;
-   		} else if (grupVal < 20 || grupVal > 99) {
+   		} else if (grupVal < 10 || grupVal > 99) {
    			toastr.options = {
    				"newestOnTop": true,
    				"positionClass": "toast-bottom-center"
@@ -34,7 +49,15 @@ $(document).ready(function(){
     		//Avoiding duplicate IDs
     		if (!document.getElementById('assig' + (i+1)))
       			$('#subjectsTable').append('<tr id="assig'+(i+1)+'"></tr>');
-      			
+      		
+      		//Saving the entered data
+      		var save = {};
+      		var contingutAssig = {inputVal, grupVal};
+      		save["assig"+i] = contingutAssig;
+      		chrome.storage.sync.set(save, function() {
+    			console.log('Settings saved');
+			});
+
       		i++; 
    		}
    		return true;
@@ -49,6 +72,7 @@ $(document).ready(function(){
    	});
   	$("#assigForm").each(function() {
         $(this).find('input').keypress(function(e) {
+        	//Press enter to rock
             if(e.which == 10 || e.which == 13) {
                 if (addNewRow()) {
    					$("#inputAssig").val("");
@@ -63,6 +87,7 @@ $(document).ready(function(){
   	$("#delBtn").click(function(){
     	if(i>0){
 		 	$("#assig"+(i-1)).html('');
+		 	chrome.storage.sync.remove('assig'+(i-1));
 		 	i--;
 		}
 	 });
