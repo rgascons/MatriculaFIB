@@ -3,8 +3,8 @@ Chrome extension to make things easier for the students of UPC-FIB during the co
 
 ----
 ##Usage
- + You can download the extension from here and add it to Chrome as an external source or,
- + you can just install it from this link: *no link currently :(*
+ + You can download the extension from here and add it to Chrome as an external source
+ + Additionally, you can just install it from this link: *no link currently :(*
 
 ##Special thanks
  + [Toastr](https://github.com/CodeSeven/toastr)
