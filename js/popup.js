@@ -10,7 +10,7 @@ $(document).ready(function(){
    	//Number of elements
    	var i=0;
 
-   	//Get all data, if any
+   	//Get all data and add it, if any
    	chrome.storage.sync.get(null, function(items) {
     	var allKeys = Object.keys(items);
     	if(!jQuery.isEmptyObject(items)) {
