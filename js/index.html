@@ -1,0 +1,27 @@
+<html>
+<head>
+	
+</head>
+<body>
+	<script type="text/javascript">
+
+		 function getInfoPlaces() {
+	      var xmlHttp = new XMLHttpRequest();
+	      var url = "http://www.fib.upc.edu/fib/estudiar-enginyeria-informatica/matricula/lliures/lliuresGRAU.html";
+	      xmlHttp.open("GET", url, false);
+	      xmlHttp.send(null);
+	      console.log("xmlHttp.responseText");
+	      var info;
+	      info.placesLliures = 0;
+	      info.placesTotals = 10;
+	      return info;
+	    }
+
+	    var info = getInfoPlaces();
+        var placesLliures = info.lliures;
+   		var placesTotals = info.totals;
+   		console.log(placesLliures + "/" + placesTotals);
+
+	</script>
+</body>
+</html>

@@ -23,6 +23,18 @@ $(document).ready(function(){
     	}
 	});
 
+    function getInfoPlaces() {
+      var xmlHttp = new XMLHttpRequest();
+      var url = "http://www.fib.upc.edu/fib/estudiar-enginyeria-informatica/matricula/lliures/lliuresGRAU.html";
+      xmlHttp.open("GET", url, false);
+      xmlHttp.send(null);
+      console.log("xmlHttp.responseText");
+      var info;
+      info.placesLliures = 0;
+      info.placesTotals = 10;
+      return info;
+    }
+
    	//This function is called each time we add a new alement to the table
    	var addNewRow = (function() {
    		var inputVal = $("#inputAssig").val().toUpperCase();
@@ -42,8 +54,12 @@ $(document).ready(function(){
       		toastr.error("Grup conté un valor incorrecte");
       		return false;
    		} else {
-   			var placesLliures = 3;
-   			var placesTotals = 40;
+   			var info = getInfoPlaces();
+        var placesLliures = info.lliures;
+   			var placesTotals = info.totals;
+        if (info === null || placesTotals === null || placesLliures === null) {
+          placesLliures = placesTotals = 99;
+        }
    			$('#assig'+i).html("<td>"+ (i+1) +
       		"<td>"+inputVal+"</td><td>"+grupVal+"</td><td>"+placesLliures+"</td><td>"+placesTotals+"</td>");
     		//Avoiding duplicate IDs
