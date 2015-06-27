@@ -23,24 +23,6 @@ $(document).ready(function(){
     	}
 	});
 
-    function Info() {
-      this.placesLliures = "42";
-      this.placesTotals = "42";
-    }
-
-    function getInfoPlaces() {
-      var xhr = new XMLHttpRequest();
-      var url = "http://www.fib.upc.edu/fib/estudiar-enginyeria-informatica/matricula/lliures/lliuresGRAU.html";
-      xhr.open("GET", url, false);
-      xhr.onreadystatechange = function() {
-        console.log("mida resposta: " + xhr.responseText.length);
-        var info = new Info();
-        info.placesLliures = "0";
-        info.placesTotals = "10";
-        return info;
-      }
-      xhr.send();
-    }
 
    	//This function is called each time we add a new alement to the table
    	var addNewRow = (function() {
