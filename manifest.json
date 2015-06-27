@@ -4,7 +4,8 @@
 	"description": "Segueix les teves assignaturas al moment",
 	"version": "1.0",
 	"permissions": [
-		"storage"
+		"storage",
+		"http://www.fib.upc.edu/"
 	],
 	"icons": { 
 		"16": "img/icon16.png",

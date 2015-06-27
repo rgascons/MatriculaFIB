@@ -23,16 +23,23 @@ $(document).ready(function(){
     	}
 	});
 
+    function Info() {
+      this.placesLliures = "42";
+      this.placesTotals = "42";
+    }
+
     function getInfoPlaces() {
-      var xmlHttp = new XMLHttpRequest();
+      var xhr = new XMLHttpRequest();
       var url = "http://www.fib.upc.edu/fib/estudiar-enginyeria-informatica/matricula/lliures/lliuresGRAU.html";
-      xmlHttp.open("GET", url, false);
-      xmlHttp.send(null);
-      console.log("xmlHttp.responseText");
-      var info;
-      info.placesLliures = 0;
-      info.placesTotals = 10;
-      return info;
+      xhr.open("GET", url, false);
+      xhr.onreadystatechange = function() {
+        console.log("mida resposta: " + xhr.responseText.length);
+        var info = new Info();
+        info.placesLliures = "0";
+        info.placesTotals = "10";
+        return info;
+      }
+      xhr.send();
     }
 
    	//This function is called each time we add a new alement to the table
@@ -54,29 +61,39 @@ $(document).ready(function(){
       		toastr.error("Grup conté un valor incorrecte");
       		return false;
    		} else {
-   			var info = getInfoPlaces();
-        var placesLliures = info.lliures;
-   			var placesTotals = info.totals;
-        if (info === null || placesTotals === null || placesLliures === null) {
-          placesLliures = placesTotals = 99;
-        }
-   			$('#assig'+i).html("<td>"+ (i+1) +
-      		"<td>"+inputVal+"</td><td>"+grupVal+"</td><td>"+placesLliures+"</td><td>"+placesTotals+"</td>");
-    		//Avoiding duplicate IDs
-    		if (!document.getElementById('assig' + (i+1)))
+
+          var placesLliures, placesTotals;
+          placesLliures = placesTotals = "99";
+          
+          var xhr = new XMLHttpRequest();
+          var url = "http://www.fib.upc.edu/fib/estudiar-enginyeria-informatica/matricula/lliures/lliuresGRAU.html";
+          xhr.open("GET", url, false);
+          xhr.onreadystatechange = function() {
+            console.log("mida resposta: " + xhr.responseText.length);
+            // Aqui cal parsejar la resposta
+            placesLliures = "0";
+            placesTotals = "10";
+          }
+          xhr.send();
+
+   			  $('#assig'+i).html("<td>"+ (i+1) + "<td>"+inputVal+"</td><td>"+grupVal+"</td><td>" + 
+              placesLliures+"</td><td>"+placesTotals+"</td>");
+      		//Avoiding duplicate IDs
+      		if (!document.getElementById('assig' + (i+1)))
       			$('#subjectsTable').append('<tr id="assig'+(i+1)+'"></tr>');
       		
       		//Saving the entered data
       		var save = {};
-      		var contingutAssig = {inputVal, grupVal};
+      		var contingutAssig = {inputVal, grupVal, placesLliures, placesTotals};
       		save["assig"+i] = contingutAssig;
       		chrome.storage.sync.set(save, function() {
-    			console.log('Settings saved');
-			});
-
-      		i++; 
+    			   console.log('Settings saved');
+			    });
+      		i++;
    		}
+
    		return true;
+
    	});
    	//Add new row to the table
    	$("#addBtn").click(function() {
