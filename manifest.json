@@ -5,7 +5,8 @@
 	"version": "1.0",
 	"permissions": [
 		"storage",
-		"http://www.fib.upc.edu/"
+		"http://www.fib.upc.edu/fib/estudiar-enginyeria-informatica/matricula/lliures/lliuresFS.html",
+		"http://www.fib.upc.edu/fib/estudiar-enginyeria-informatica/matricula/lliures/lliuresGRAU.html"
 	],
 	"icons": { 
 		"16": "img/icon16.png",

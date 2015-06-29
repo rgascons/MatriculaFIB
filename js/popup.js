@@ -23,6 +23,23 @@ $(document).ready(function(){
     	}
 	});
 
+   	var parseURL = (function(subjectCode, esFaseInicial) {
+   		var xhr = new XMLHttpRequest();
+   		var url;
+   		if (esFaseInicial) {
+   			url = "http://www.fib.upc.edu/fib/estudiar-enginyeria-informatica/matricula/lliures/lliuresFS.html";
+   		} else {
+   			url = "http://www.fib.upc.edu/fib/estudiar-enginyeria-informatica/matricula/lliures/lliuresGRAU.html";
+   		}
+      xhr.open("GET", url, false);
+        xhr.onreadystatechange = function() {
+          console.log("mida resposta: " + xhr.responseText.length);
+          // Aqui cal parsejar la resposta
+          placesLliures = "0";
+          placesTotals = "10";
+        }
+        xhr.send();
+   	})();
 
    	//This function is called each time we add a new alement to the table
    	var addNewRow = (function() {
@@ -46,24 +63,15 @@ $(document).ready(function(){
 
           var placesLliures, placesTotals;
           placesLliures = placesTotals = "99";
-          
-          var xhr = new XMLHttpRequest();
-          var url = "http://www.fib.upc.edu/fib/estudiar-enginyeria-informatica/matricula/lliures/lliuresGRAU.html";
-          xhr.open("GET", url, false);
-          xhr.onreadystatechange = function() {
-            console.log("mida resposta: " + xhr.responseText.length);
-            // Aqui cal parsejar la resposta
-            placesLliures = "0";
-            placesTotals = "10";
-          }
-          xhr.send();
 
-   			  $('#assig'+i).html("<td>"+ (i+1) + "<td>"+inputVal+"</td><td>"+grupVal+"</td><td>" + 
+
+
+   			  $('#assig'+i).html("<td>"+ (i+1) + "<td>"+inputVal+"</td><td>"+grupVal+"</td><td>" +
               placesLliures+"</td><td>"+placesTotals+"</td>");
       		//Avoiding duplicate IDs
       		if (!document.getElementById('assig' + (i+1)))
       			$('#subjectsTable').append('<tr id="assig'+(i+1)+'"></tr>');
-      		
+
       		//Saving the entered data
       		var save = {};
       		var contingutAssig = {inputVal, grupVal, placesLliures, placesTotals};
