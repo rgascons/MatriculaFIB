@@ -23,6 +23,10 @@ $(document).ready(function(){
     	}
 	});
 
+    //Places lliures + places totals
+    var placesLliures, placesTotals;
+    placesLliures = placesTotals = "99";
+
    	var parseURL = (function(subjectCode, esFaseInicial) {
    		var xhr = new XMLHttpRequest();
    		var url;
@@ -32,14 +36,14 @@ $(document).ready(function(){
    			url = "http://www.fib.upc.edu/fib/estudiar-enginyeria-informatica/matricula/lliures/lliuresGRAU.html";
    		}
       xhr.open("GET", url, false);
-        xhr.onreadystatechange = function() {
-          console.log("mida resposta: " + xhr.responseText.length);
-          // Aqui cal parsejar la resposta
-          placesLliures = "0";
-          placesTotals = "10";
-        }
+      xhr.onreadystatechange = function() {
+        console.log("mida resposta: " + xhr.responseText.length);
+        // Aqui cal parsejar la resposta
+        placesLliures = "0";
+        placesTotals = "10";
+      }
         xhr.send();
-   	})();
+   	})();   //function is autocalled for debug reasons
 
    	//This function is called each time we add a new alement to the table
    	var addNewRow = (function() {
@@ -60,12 +64,6 @@ $(document).ready(function(){
       		toastr.error("Grup conté un valor incorrecte");
       		return false;
    		} else {
-
-          var placesLliures, placesTotals;
-          placesLliures = placesTotals = "99";
-
-
-
    			  $('#assig'+i).html("<td>"+ (i+1) + "<td>"+inputVal+"</td><td>"+grupVal+"</td><td>" +
               placesLliures+"</td><td>"+placesTotals+"</td>");
       		//Avoiding duplicate IDs
