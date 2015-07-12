@@ -1,4 +1,7 @@
-$(document).ready(function(){
+   $(document).ready(function(){
+
+  var bkg = chrome.extension.getBackgroundPage();
+
 	//All links inside the popup load in a new tab
    	$('body').on('click', 'a', function(){
    		var hyperlink = $(this).attr('href')
@@ -16,40 +19,52 @@ $(document).ready(function(){
     	if(!jQuery.isEmptyObject(items)) {
     		$.each(items, function(j, item) {
     			$('#assig'+i).html("<td>"+ (i+1) +
-      				"<td>"+items[j].inputVal+"</td><td>"+items[j].grupVal+"</td><td>"+2+"</td><td>"+40+"</td>");
-    			$('#subjectsTable').append('<tr id="assig'+(i+1)+'"></tr>');
+      				"<td>"+items[j].inputVal+"</td><td>"+items[j].grupVal+"</td><td>"+items[j].placesLliures+"</td><td>"+items[j].placesTotals+"</td>");
+          $('#subjectsTable').append('<tr id="assig'+(i+1)+'"></tr>');
     			i++;
 			})
     	}
 	});
 
-    //Places lliures + places totals
-    var placesLliures, placesTotals;
-    placesLliures = placesTotals = "99";
+    function buildDataJSON(html) {
+      html = html.trim();
+      html = html.substring(html.search("{\"data\"")).trim();
+      html = html.substring(0, html.search("]}]}") + "]}]}".length).trim();
+     // alert(html.substring(html.length-100));
+      data = JSON.parse(html);
+      alert(JSON.stringify(data["assigs"][0]));
+      return data;
+    }
 
-   	var parseURL = (function(subjectCode, esFaseInicial) {
-   		var xhr = new XMLHttpRequest();
-   		var url;
-   		if (esFaseInicial) {
-   			url = "http://www.fib.upc.edu/fib/estudiar-enginyeria-informatica/matricula/lliures/lliuresFS.html";
-   		} else {
-   			url = "http://www.fib.upc.edu/fib/estudiar-enginyeria-informatica/matricula/lliures/lliuresGRAU.html";
-   		}
-      xhr.open("GET", url, false);
-      xhr.onreadystatechange = function() {
-        console.log("mida resposta: " + xhr.responseText.length);
-        // Aqui cal parsejar la resposta
-        placesLliures = "0";
-        placesTotals = "10";
-      }
-        xhr.send();
-   	})();   //function is autocalled for debug reasons
+    function parseResponse(assig, grup, html) {
+      //bkg.console.log('foo');
+      
+    }
+
+    function updateHTML(inputVal, grupVal, placesLliures, placesTotals) {
+       $('#assig'+i).html("<td>"+ (i+1) + "<td>"+inputVal+"</td><td>"+grupVal+"</td><td>" + 
+              placesLliures+"</td><td>"+placesTotals+"</td>");
+        //Avoiding duplicate IDs
+        if (!document.getElementById('assig' + (i+1))) {
+          $('#subjectsTable').append('<tr id="assig'+(i+1)+'"></tr>');
+
+          //Saving the entered data
+          var save = {};
+          var contingutAssig = {inputVal, grupVal, placesLliures, placesTotals};
+          save["assig"+i] = contingutAssig;
+          chrome.storage.sync.set(save, function() {
+            console.log('Settings saved');
+          });
+          i++;
+        }
+    }
+
 
    	//This function is called each time we add a new alement to the table
    	var addNewRow = (function() {
    		var inputVal = $("#inputAssig").val().toUpperCase();
    		var grupVal = $("#inputGrup").val();
-   		if (inputVal.length <= 0) {
+   		/*if (inputVal.length <= 0) {
    			toastr.options = {
    				"newestOnTop": true,
    				"positionClass": "toast-bottom-center"
@@ -63,22 +78,24 @@ $(document).ready(function(){
    			}
       		toastr.error("Grup conté un valor incorrecte");
       		return false;
-   		} else {
-   			  $('#assig'+i).html("<td>"+ (i+1) + "<td>"+inputVal+"</td><td>"+grupVal+"</td><td>" +
-              placesLliures+"</td><td>"+placesTotals+"</td>");
-      		//Avoiding duplicate IDs
-      		if (!document.getElementById('assig' + (i+1)))
-      			$('#subjectsTable').append('<tr id="assig'+(i+1)+'"></tr>');
+   		} else {*/
 
-      		//Saving the entered data
-      		var save = {};
-      		var contingutAssig = {inputVal, grupVal, placesLliures, placesTotals};
-      		save["assig"+i] = contingutAssig;
-      		chrome.storage.sync.set(save, function() {
-    			   console.log('Settings saved');
-			    });
-      		i++;
-   		}
+          var placesLliures, placesTotals;
+          placesLliures = placesTotals = "99";
+          
+          var xhr = new XMLHttpRequest();
+          var url = "http://www.fib.upc.edu/fib/estudiar-enginyeria-informatica/matricula/lliures/lliuresGRAU.html";
+          xhr.open("GET", url, false);
+          xhr.onreadystatechange = function() {
+            console.log("mida resposta: " + xhr.responseText.length);
+            var data = buildDataJSON(xhr.responseText);
+            placesLliures = "0";
+            placesTotals = "10";
+
+            updateHTML(inputVal, grupVal, placesLliures, placesTotals);
+          }
+          xhr.send();
+//   		}
 
    		return true;
 
@@ -91,6 +108,11 @@ $(document).ready(function(){
    		}
   		return false;
    	});
+
+    $("#refreshBtn").click(function() {
+      for(;;);
+    });
+
   	$("#assigForm").each(function() {
         $(this).find('input').keypress(function(e) {
         	//Press enter to rock
