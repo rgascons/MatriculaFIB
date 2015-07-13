@@ -67,14 +67,16 @@ $(document).ready(function(){
    		if (inputVal.length <= 0) {
    			toastr.options = {
    				"newestOnTop": true,
-   				"positionClass": "toast-bottom-center"
+   				"positionClass": "toast-bottom-center",
+          "preventDuplicates": true
    			}
       		toastr.error("El camp d'entrada està buit");
       		return false;
    		} else if (grupVal < 10 || grupVal > 99) {
    			toastr.options = {
    				"newestOnTop": true,
-   				"positionClass": "toast-bottom-center"
+   				"positionClass": "toast-bottom-center",
+          "preventDuplicates": true
    			}
       		toastr.error("Grup conté un valor incorrecte");
       		return false;
