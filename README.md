@@ -1,10 +1,14 @@
-# MatriculaFIB
+MatriculaFIB
+============
 Chrome extension to make things easier for the students of UPC-FIB during the course-enrolment days
 
 ----
+##Requisites
+ + Latest version of Chrome
+ 
 ##Usage
- + You can download the extension from here and add it to Chrome as an external source
- + Additionally, you can just install it from this link: *no link currently :(*
+ + You can download the extension from this link: *no link available atm*
+ + Additionally, you can get it from here and add it to Chrome as an external source
 
 ##Special thanks
  + [Toastr](https://github.com/CodeSeven/toastr)
