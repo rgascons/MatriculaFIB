@@ -1,4 +1,4 @@
-   $(document).ready(function(){
+$(document).ready(function(){
 
   var bkg = chrome.extension.getBackgroundPage();
 
@@ -7,7 +7,7 @@
    		var hyperlink = $(this).attr('href')
    		if (hyperlink !== "#") {
      		chrome.tabs.create({url: hyperlink});
- 		}
+ 		  }
      	return false;
    	});
    	//Number of elements
@@ -24,7 +24,7 @@
     			i++;
 			})
     	}
-	});
+	   });
 
     function buildDataJSON(html) {
       html = html.trim();
@@ -38,11 +38,11 @@
 
     function parseResponse(assig, grup, html) {
       //bkg.console.log('foo');
-      
+
     }
 
     function updateHTML(inputVal, grupVal, placesLliures, placesTotals) {
-       $('#assig'+i).html("<td>"+ (i+1) + "<td>"+inputVal+"</td><td>"+grupVal+"</td><td>" + 
+       $('#assig'+i).html("<td>"+ (i+1) + "<td>"+inputVal+"</td><td>"+grupVal+"</td><td>" +
               placesLliures+"</td><td>"+placesTotals+"</td>");
         //Avoiding duplicate IDs
         if (!document.getElementById('assig' + (i+1))) {
@@ -60,11 +60,11 @@
     }
 
 
-   	//This function is called each time we add a new alement to the table
-   	var addNewRow = (function() {
+   	//Called each time we add a new alement to the table
+   	function addNewRow() {
    		var inputVal = $("#inputAssig").val().toUpperCase();
    		var grupVal = $("#inputGrup").val();
-   		/*if (inputVal.length <= 0) {
+   		if (inputVal.length <= 0) {
    			toastr.options = {
    				"newestOnTop": true,
    				"positionClass": "toast-bottom-center"
@@ -78,11 +78,11 @@
    			}
       		toastr.error("Grup conté un valor incorrecte");
       		return false;
-   		} else {*/
+   		} else {
 
           var placesLliures, placesTotals;
           placesLliures = placesTotals = "99";
-          
+
           var xhr = new XMLHttpRequest();
           var url = "http://www.fib.upc.edu/fib/estudiar-enginyeria-informatica/matricula/lliures/lliuresGRAU.html";
           xhr.open("GET", url, false);
@@ -95,11 +95,9 @@
             updateHTML(inputVal, grupVal, placesLliures, placesTotals);
           }
           xhr.send();
-//   		}
-
-   		return true;
-
-   	});
+   	    }
+        return true;
+   	}
    	//Add new row to the table
    	$("#addBtn").click(function() {
    		if (addNewRow()) {
@@ -115,13 +113,13 @@
 
   	$("#assigForm").each(function() {
         $(this).find('input').keypress(function(e) {
-        	//Press enter to rock
+        	  //Enter so send data as well
             if(e.which == 10 || e.which == 13) {
                 if (addNewRow()) {
-   					$("#inputAssig").val("");
-   					$("#inputGrup").val("");
-   				}
-  				return false;
+   					          $("#inputAssig").val("");
+   					               $("#inputGrup").val("");
+   				      }
+  				      return false;
             }
         });
         $(this).find('input[type=submit]').hide();
