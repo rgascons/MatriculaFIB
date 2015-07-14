@@ -3,25 +3,25 @@
 	<head>
 	    <meta charset="utf-8">
 		<meta name="description" content="Visor de places lliures de la FIB">
-		<meta name="author" content="Elliot Hesp">
-		
+		<meta name="author" content="Ricard i Pau">
+
 		<title>Visor de places lliures de la FIB</title>
-		
+
 		<!-- Scripts -->
 		<script src="js/jquery-2.0.3.min.js"></script>
 		<script src="js/bootstrap.min.js"></script>
 		<script type="text/javascript" src="js/popup.js"></script>
 		<script src="js/toastr.js"></script>
-		
+
 		<!-- Cascading Style Sheets -->
 		<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
 		<link href="css/custom.css" rel="stylesheet" media="screen">
 		<link href="css/toastr.css" rel="stylesheet">
-		
+
 	</head>
-	
+
 	<body>
-	
+
 		<nav class="navbar navbar-default" role="navigation">
 			<div class="navbar-header">
 					<a class="navbar-brand" href="#">Places lliures</a>
@@ -40,7 +40,7 @@
 				</ul>
 			</div>
 		</nav>
-		
+
 		<section>
 			<table id="subjectsTable" class="table table-hover">
 				<thead>
@@ -57,13 +57,13 @@
 				</tbody>
 			</table>
 			<form id="assigForm" class="form-inline">
-				<div class ="form-group">   
+				<div class ="form-group">
 					<input id="inputAssig" class="form-control" type="text" name="fname"
 							placeholder="Codi assignatura (p.e. IDI)" selected="selected">
-					
+
 				</div>
 				<div class="col-xs-2 form-group">
-					<input id="inputGrup" class="form-control" type="number" min="10" max="60" name="sname" 
+					<input id="inputGrup" class="form-control" type="number" min="10" max="60" name="sname"
 					placeholder="Grup" size="4">
 				</div>
     			<input id="addBtn" type="button" class="btn btn-default" value="Afegir"/>
