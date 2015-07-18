@@ -13,17 +13,17 @@ $(document).ready(function() {
     return false;
   });
   //Number of elements
-  var i = 0;
+  var numberOfAssigs = 0;
 
   //Get all data and add it, if any
   chrome.storage.sync.get(null, function(items) {
     var allKeys = Object.keys(items);
     if (!jQuery.isEmptyObject(items)) {
       $.each(items, function(j, item) {
-        $('#assig' + i).html("<td>" + (i + 1) +
-          "<td>" + items[j].inputVal + "</td><td>" + items[j].grupVal + "</td><td>" + items[j].placesLliures + "</td><td>" + items[j].placesTotals + "</td>");
-        $('#subjectsTable').append('<tr id="assig' + (i + 1) + '"></tr>');
-        i++;
+        $('#assig' + numberOfAssigs).html("<td>" + (numberOfAssigs + 1) +
+          "<td>" + items[j].assigName + "</td><td>" + items[j].grupVal + "</td><td>" + items[j].placesLliures + "</td><td>" + items[j].placesTotals + "</td>");
+        $('#subjectsTable').append('<tr id="assig' + (numberOfAssigs + 1) + '"></tr>');
+        numberOfAssigs++;
       })
     }
   });
@@ -32,9 +32,7 @@ $(document).ready(function() {
     html = html.trim();
     html = html.substring(html.search("{\"data\"")).trim();
     html = html.substring(0, html.search("]}]}") + "]}]}".length).trim();
-    // alert(html.substring(html.length-100));
     data = JSON.parse(html);
-    alert(JSON.stringify(data["assigs"][0]));
     return data;
   }
 
@@ -43,26 +41,60 @@ $(document).ready(function() {
 
   }
 
-  function updateHTML(inputVal, grupVal, placesLliures, placesTotals) {
-    $('#assig' + i).html("<td>" + (i + 1) + "<td>" + inputVal + "</td><td>" + grupVal + "</td><td>" +
+  function updateHTML(assigName, grupVal, placesLliures, placesTotals) {
+    $('#assig' + numberOfAssigs).html("<td>" + (numberOfAssigs + 1) + "<td>" + assigName + "</td><td>" + grupVal + "</td><td>" +
       placesLliures + "</td><td>" + placesTotals + "</td>");
     //Avoiding duplicate IDs
-    if (!document.getElementById('assig' + (i + 1))) {
-      $('#subjectsTable').append('<tr id="assig' + (i + 1) + '"></tr>');
+    if (!document.getElementById('assig' + (numberOfAssigs + 1))) {
+      $('#subjectsTable').append('<tr id="assig' + (numberOfAssigs + 1) + '"></tr>');
 
       //Saving the entered data
       var save = {};
       var contingutAssig = {
-        inputVal, grupVal, placesLliures, placesTotals
+        assigName, grupVal, placesLliures, placesTotals
       };
-      save["assig" + i] = contingutAssig;
+      save["assig" + numberOfAssigs] = contingutAssig;
       chrome.storage.sync.set(save, function() {
         console.log('Settings saved');
       });
-      i++;
+      numberOfAssigs++;
     }
   }
 
+  var assigs = {};
+
+  function refreshTable () {
+    var save = {};
+    var table = document.getElementById('subjectsTable');
+    var a = assigs["assigs"];
+    for (var p = 1; p < table.rows.length-1; ++p) {
+      //console.log(table.rows[i].innerHTML);
+      var assig = table.rows[p].cells[1].innerHTML;
+      var grup = table.rows[p].cells[2].innerHTML;
+      for (var q = 0; q < a.length; ++q) {
+        console.log(a[q]["nomAssig"]);
+        if (a[q]["nomAssig"] == assig) {
+          grups = a[q]["grups"];
+          for (var r = 0; r < grups.length; ++r) {
+            if (grups[r]["tipusGrup"] == "N" && grups[r]["nom"] == grup) {
+              placesLliures = grups[r]["placesLliures"];
+              placesTotals = grups[r]["placesTotals"];
+              table.rows[p].cells[3].innerHTML = grups[r]["placesLliures"];
+              table.rows[p].cells[4].innerHTML = grups[r]["placesTotals"];
+              var assigName = assig;
+              var grupVal = grup;
+              var contingutAssig = { assigName, grupVal, placesLliures, placesTotals };
+              save["assig" + p] = contingutAssig;
+            }
+          }
+        }
+        //if (as["nomAssig"] == assig) console.log(ass["grups"].length);
+      }
+    }
+    chrome.storage.sync.set(save, function() {
+        console.log('Settings saved');
+      });
+  }
 
   //Called each time we add a new alement to the table
   function addNewRow() {
@@ -94,11 +126,12 @@ $(document).ready(function() {
       xhr.open("GET", url, false);
       xhr.onreadystatechange = function() {
         console.log("mida resposta: " + xhr.responseText.length);
-        var data = buildDataJSON(xhr.responseText);
+        assigs = buildDataJSON(xhr.responseText);
         placesLliures = "0";
         placesTotals = "10";
 
         updateHTML(inputVal, grupVal, placesLliures, placesTotals);
+        refreshTable();
       }
       xhr.send();
     }
@@ -114,7 +147,7 @@ $(document).ready(function() {
   });
 
   $("#refreshBtn").click(function() {
-    for (;;);
+    refreshTable();
   });
 
   $("#assigForm").each(function() {
@@ -132,10 +165,10 @@ $(document).ready(function() {
   });
   //Delete last row
   $("#delBtn").click(function() {
-    if (i > 0) {
-      $("#assig" + (i - 1)).html('');
-      chrome.storage.sync.remove('assig' + (i - 1));
-      i--;
+    if (numberOfAssigs > 0) {
+      $("#assig" + (numberOfAssigs - 1)).html('');
+      chrome.storage.sync.remove('assig' + (numberOfAssigs - 1));
+      numberOfAssigs--;
     }
   });
 });
