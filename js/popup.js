@@ -47,16 +47,7 @@ $(document).ready(function() {
     //Avoiding duplicate IDs
     if (!document.getElementById('assig' + (numberOfAssigs + 1))) {
       $('#subjectsTable').append('<tr id="assig' + (numberOfAssigs + 1) + '"></tr>');
-
-      //Saving the entered data
-      var save = {};
-      var contingutAssig = {
-        assigName, grupVal, placesLliures, placesTotals
-      };
-      save["assig" + numberOfAssigs] = contingutAssig;
-      chrome.storage.sync.set(save, function() {
-        console.log('Settings saved');
-      });
+      console.log('Number of assigs' + numberOfAssigs);
       numberOfAssigs++;
     }
   }
@@ -72,7 +63,7 @@ $(document).ready(function() {
       var assig = table.rows[p].cells[1].innerHTML;
       var grup = table.rows[p].cells[2].innerHTML;
       for (var q = 0; q < a.length; ++q) {
-        console.log(a[q]["nomAssig"]);
+        //console.log(a[q]["nomAssig"]);
         if (a[q]["nomAssig"] == assig) {
           grups = a[q]["grups"];
           for (var r = 0; r < grups.length; ++r) {
@@ -84,7 +75,8 @@ $(document).ready(function() {
               var assigName = assig;
               var grupVal = grup;
               var contingutAssig = { assigName, grupVal, placesLliures, placesTotals };
-              save["assig" + p] = contingutAssig;
+              console.log(contingutAssig);
+              save["assig" + (p-1)] = contingutAssig;
             }
           }
         }
@@ -92,8 +84,8 @@ $(document).ready(function() {
       }
     }
     chrome.storage.sync.set(save, function() {
-        console.log('Settings saved');
-      });
+        console.log('Settings saved: ' + JSON.stringify(save));
+    });
   }
 
   //Called each time we add a new alement to the table
@@ -119,7 +111,7 @@ $(document).ready(function() {
     } else {
 
       var placesLliures, placesTotals;
-      placesLliures = placesTotals = "99";
+      //placesLliures = placesTotals = "99";
 
       var xhr = new XMLHttpRequest();
       var url = "http://www.fib.upc.edu/fib/estudiar-enginyeria-informatica/matricula/lliures/lliuresGRAU.html";
@@ -127,8 +119,8 @@ $(document).ready(function() {
       xhr.onreadystatechange = function() {
         console.log("mida resposta: " + xhr.responseText.length);
         assigs = buildDataJSON(xhr.responseText);
-        placesLliures = "0";
-        placesTotals = "10";
+        //placesLliures = "0";
+        //placesTotals = "10";
 
         updateHTML(inputVal, grupVal, placesLliures, placesTotals);
         refreshTable();
