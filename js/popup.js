@@ -42,7 +42,7 @@ $(document).ready(function() {
     //Avoiding duplicate IDs
     if (!document.getElementById('assig' + (numberOfAssigs + 1))) {
       $('#subjectsTable').append('<tr id="assig' + (numberOfAssigs + 1) + '"></tr>');
-      console.log('Number of assigs' + numberOfAssigs);
+      //console.log('Number of assigs' + numberOfAssigs);
       numberOfAssigs++;
     }
   }
@@ -71,7 +71,7 @@ $(document).ready(function() {
               var assigName = assig;
               var grupVal = grup;
               var contingutAssig = { assigName, grupVal, placesLliures, placesTotals };
-              console.log(contingutAssig);
+              //console.log(contingutAssig);
               save["assig" + (p-1)] = contingutAssig;
             }
           }
@@ -87,7 +87,7 @@ $(document).ready(function() {
       }
     }
     chrome.storage.sync.set(save, function() {
-        console.log('Settings saved: ' + JSON.stringify(save));
+        //console.log('Settings saved: ' + JSON.stringify(save));
     });
   }
 
@@ -97,9 +97,9 @@ $(document).ready(function() {
     var url = "http://46.101.250.23:8080/data";
     xhr.open("GET", url, false);
     xhr.onreadystatechange = function() {
-      console.log("mida resposta: " + xhr.responseText.length);
+      //console.log("mida resposta: " + xhr.responseText.length);
       assigs = JSON.parse(xhr.response);
-      console.log("resposta:" + assigs);
+      //console.log("resposta:" + assigs);
     }
     xhr.send();
   }
