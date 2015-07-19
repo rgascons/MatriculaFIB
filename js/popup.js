@@ -1,7 +1,5 @@
 $(document).ready(function() {
 
-  var bkg = chrome.extension.getBackgroundPage();
-
   //All links inside the popup load in a new tab
   $('body').on('click', 'a', function() {
     var hyperlink = $(this).attr('href')
@@ -15,7 +13,7 @@ $(document).ready(function() {
   //Number of elements
   var numberOfAssigs = 0;
 
-  //Get all data and add it, if any
+  //Get all data and add it, if any, and update it to the latest results
   chrome.storage.sync.get(null, function(items) {
     var allKeys = Object.keys(items);
     if (!jQuery.isEmptyObject(items)) {
@@ -25,6 +23,8 @@ $(document).ready(function() {
         $('#subjectsTable').append('<tr id="assig' + (numberOfAssigs + 1) + '"></tr>');
         numberOfAssigs++;
       })
+      retrieveData();
+      refreshTable();
     }
   });
 
@@ -36,14 +36,9 @@ $(document).ready(function() {
     return data;
   }
 
-  function parseResponse(assig, grup, html) {
-    //bkg.console.log('foo');
-
-  }
-
-  function updateHTML(assigName, grupVal, placesLliures, placesTotals) {
+  function updateHTML(assigName, grupVal) {
     $('#assig' + numberOfAssigs).html("<td>" + (numberOfAssigs + 1) + "<td>" + assigName + "</td><td>" + grupVal + "</td><td>" +
-      placesLliures + "</td><td>" + placesTotals + "</td>");
+      undefined + "</td><td>" + undefined + "</td>");
     //Avoiding duplicate IDs
     if (!document.getElementById('assig' + (numberOfAssigs + 1))) {
       $('#subjectsTable').append('<tr id="assig' + (numberOfAssigs + 1) + '"></tr>');
@@ -88,6 +83,18 @@ $(document).ready(function() {
     });
   }
 
+  //Retrieve data from the webpage
+  function retrieveData() {
+    var xhr = new XMLHttpRequest();
+    var url = "http://www.fib.upc.edu/fib/estudiar-enginyeria-informatica/matricula/lliures/lliuresGRAU.html";
+    xhr.open("GET", url, false);
+    xhr.onreadystatechange = function() {
+      console.log("mida resposta: " + xhr.responseText.length);
+      assigs = buildDataJSON(xhr.responseText);
+    }
+    xhr.send();
+  }
+
   //Called each time we add a new alement to the table
   function addNewRow() {
     var inputVal = $("#inputAssig").val().toUpperCase();
@@ -109,23 +116,9 @@ $(document).ready(function() {
       toastr.error("Grup conté un valor incorrecte");
       return false;
     } else {
-
-      var placesLliures, placesTotals;
-      //placesLliures = placesTotals = "99";
-
-      var xhr = new XMLHttpRequest();
-      var url = "http://www.fib.upc.edu/fib/estudiar-enginyeria-informatica/matricula/lliures/lliuresGRAU.html";
-      xhr.open("GET", url, false);
-      xhr.onreadystatechange = function() {
-        console.log("mida resposta: " + xhr.responseText.length);
-        assigs = buildDataJSON(xhr.responseText);
-        //placesLliures = "0";
-        //placesTotals = "10";
-
-        updateHTML(inputVal, grupVal, placesLliures, placesTotals);
-        refreshTable();
-      }
-      xhr.send();
+      retrieveData();
+      updateHTML(inputVal, grupVal);
+      refreshTable();
     }
     return true;
   }
