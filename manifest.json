@@ -5,6 +5,7 @@
 	"version": "1.0",
 	"permissions": [
 		"storage",
+		"http://46.101.250.23:8080/data",
 		"http://www.fib.upc.edu/fib/estudiar-enginyeria-informatica/matricula/lliures/lliuresFS.html",
 		"http://www.fib.upc.edu/fib/estudiar-enginyeria-informatica/matricula/lliures/lliuresGRAU.html"
 	],

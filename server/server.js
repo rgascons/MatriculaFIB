@@ -6,9 +6,7 @@ var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 
 var app = express();
 
-var data = JSON.parse("{}");
-
-
+var data = {};
 
 function buildDataJSON(html) {
     html = html.toString().trim();
@@ -20,22 +18,30 @@ function buildDataJSON(html) {
 function fetchData () {
 	console.log("Fetching data...");
 
-	var xhr = new XMLHttpRequest();
-	var url = "http://www.fib.upc.edu/fib/estudiar-enginyeria-informatica/matricula/lliures/lliuresGRAU.html";
-	xhr.open("GET", url, false);
-	xhr.onreadystatechange = function() {
-		console.log("Resposta: " + xhr.status + ", Mida resposta: " + xhr.responseText.length);
-		data = buildDataJSON(xhr.responseText);
+	var xhr1 = new XMLHttpRequest();
+	var url1 = "http://www.fib.upc.edu/fib/estudiar-enginyeria-informatica/matricula/lliures/lliuresGRAU.html";
+	xhr1.open("GET", url1, false);
+	xhr1.onreadystatechange = function() {
+		console.log("Resposta: " + xhr1.status + ", Mida resposta: " + xhr1.responseText.length);
+		altres = buildDataJSON(xhr1.responseText);
+		xhr2 = new XMLHttpRequest();
+		var url2 = "http://www.fib.upc.edu/fib/estudiar-enginyeria-informatica/matricula/lliures/lliuresFS.html";
+		xhr2.open("GET", url2, false);
+		xhr2.onreadystatechange = function() {
+			console.log("Resposta: " + xhr2.status + ", Mida resposta: " + xhr2.responseText.length);
+			faseInicial = buildDataJSON(xhr2.responseText);
+			assigs = faseInicial["assigs"].concat(altres["assigs"]);
+		}
+		xhr2.send();
 	}
-	xhr.send();
+	xhr1.send();
 }
 
-setInterval(function(){ fetchData() }, 10*60*1000);
+setInterval(function(){ fetchData() }, 60*60*1000);
 fetchData();
 
 app.get('/data', function(req, res, next) {
-    //res.status(200).send("{'molta informacio': 'oi que si?'}");
-    res.json(data);
+    res.json(assigs);
 });
 
 http.createServer(app).listen(8080, function(){
