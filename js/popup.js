@@ -153,6 +153,11 @@ $(document).ready(function() {
 
   $("#refreshBtn").click(function() {
     refreshTable();
+    toastr.options = {
+      "newestOnTop": true,
+      "positionClass": "toast-bottom-center",
+    }
+    toastr.info("Dades recarregades amb èxit");
   });
 
   $("#assigForm").each(function() {
