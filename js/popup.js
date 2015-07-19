@@ -82,6 +82,9 @@ $(document).ready(function() {
         toastr.options = {
           "newestOnTop": true,
           "positionClass": "toast-bottom-center",
+          "showDuration": "150",
+          "hideDuration": "500",
+          "timeOut": "2000"
         }
         toastr.error("L'assignatura " + assig + " o el seu grup son incorrectes");
       }
@@ -112,7 +115,10 @@ $(document).ready(function() {
       toastr.options = {
         "newestOnTop": true,
         "positionClass": "toast-bottom-center",
-        "preventDuplicates": true
+        "preventDuplicates": true,
+        "showDuration": "150",
+        "hideDuration": "500",
+        "timeOut": "2000"
       }
       toastr.error("El camp d'entrada està buit");
       return false;
@@ -120,7 +126,10 @@ $(document).ready(function() {
       toastr.options = {
         "newestOnTop": true,
         "positionClass": "toast-bottom-center",
-        "preventDuplicates": true
+        "preventDuplicates": true,
+        "showDuration": "150",
+        "hideDuration": "500",
+        "timeOut": "2000"
       }
       toastr.error("Grup conté un valor incorrecte");
       return false;
@@ -145,6 +154,9 @@ $(document).ready(function() {
     toastr.options = {
       "newestOnTop": true,
       "positionClass": "toast-bottom-center",
+      "showDuration": "150",
+      "hideDuration": "500",
+      "timeOut": "2000"
     }
     toastr.info("Dades recarregades amb èxit");
   });
