@@ -52,17 +52,18 @@ $(document).ready(function() {
   function refreshTable () {
     var save = {};
     var table = document.getElementById('subjectsTable');
-    var a = assigs["assigs"];
     for (var p = 1; p < table.rows.length-1; ++p) {
       //console.log(table.rows[i].innerHTML);
       var assig = table.rows[p].cells[1].innerHTML;
       var grup = table.rows[p].cells[2].innerHTML;
-      for (var q = 0; q < a.length; ++q) {
+      var isValid = false;
+      for (var q = 0; q < assigs.length; ++q) {
         //console.log(a[q]["nomAssig"]);
-        if (a[q]["nomAssig"] == assig) {
-          grups = a[q]["grups"];
+        if (assigs[q]["nomAssig"] == assig) {
+          grups = assigs[q]["grups"];
           for (var r = 0; r < grups.length; ++r) {
             if (grups[r]["tipusGrup"] == "N" && grups[r]["nom"] == grup) {
+              isValid = true;
               placesLliures = grups[r]["placesLliures"];
               placesTotals = grups[r]["placesTotals"];
               table.rows[p].cells[3].innerHTML = grups[r]["placesLliures"];
@@ -77,6 +78,13 @@ $(document).ready(function() {
         }
         //if (as["nomAssig"] == assig) console.log(ass["grups"].length);
       }
+      if(!isValid) {
+        toastr.options = {
+          "newestOnTop": true,
+          "positionClass": "toast-bottom-center",
+        }
+        toastr.error("L'assignatura " + assig + " o el seu grup son incorrectes");
+      }
     }
     chrome.storage.sync.set(save, function() {
         console.log('Settings saved: ' + JSON.stringify(save));
@@ -86,13 +94,25 @@ $(document).ready(function() {
   //Retrieve data from the webpage
   function retrieveData() {
     var xhr = new XMLHttpRequest();
-    var url = "http://www.fib.upc.edu/fib/estudiar-enginyeria-informatica/matricula/lliures/lliuresGRAU.html";
-    xhr.open("GET", url, false);
+    var url1 = "http://www.fib.upc.edu/fib/estudiar-enginyeria-informatica/matricula/lliures/lliuresGRAU.html";
+    var url2 = "http://www.fib.upc.edu/fib/estudiar-enginyeria-informatica/matricula/lliures/lliuresFS.html";
+    var assigs1, assigs2;
+    xhr.open("GET", url1, false);
     xhr.onreadystatechange = function() {
       console.log("mida resposta: " + xhr.responseText.length);
-      assigs = buildDataJSON(xhr.responseText);
+      assigs1 = buildDataJSON(xhr.responseText);
+      console.log(assigs1);
     }
     xhr.send();
+    xhr.open("GET", url2, false);
+    xhr.onreadystatechange = function() {
+      console.log("mida resposta: " + xhr.responseText.length);
+      assigs2 = buildDataJSON(xhr.responseText);
+      console.log(assigs2);
+    }
+    xhr.send();
+    assigs = assigs1["assigs"].concat(assigs2["assigs"]);
+    console.log(assigs);
   }
 
   //Called each time we add a new alement to the table
