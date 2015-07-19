@@ -16,5 +16,5 @@ Chrome extension to make things easier for the students of UPC-FIB during the co
 
 ##Authors
  + [Ricard Gascons](https://github.com/mindula/)
- + [Pau Oliver](https://github.com/ghastgar)
+ + [ghastgar](https://github.com/ghastgar)
  
