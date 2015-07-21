@@ -7,7 +7,7 @@ Chrome extension to make things easier for the students of UPC-FIB during the co
  + Latest version of Chrome
  
 ##Usage
- + You can download the extension from this link: *no link available atm*
+ + You can download the extension from this [link](https://goo.gl/6DDhBC)
  + Additionally, you can get it from here and add it to Chrome as an external source
 
 ##Special thanks
