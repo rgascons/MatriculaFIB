@@ -27,14 +27,14 @@ $(document).ready(function() {
       refreshTable();
     }
   });
-  /*
+
   function buildDataJSON(html) {
     html = html.trim();
     html = html.substring(html.search("{\"data\"")).trim();
     html = html.substring(0, html.search("]}]}") + "]}]}".length).trim();
     data = JSON.parse(html);
     return data;
-  }*/
+  }
 
   function updateHTML(assigName, grupVal) {
     $('#assig' + numberOfAssigs).html("<td>" + (numberOfAssigs + 1) + "<td>" + assigName + "</td><td>" + grupVal + "</td><td>" +
@@ -89,22 +89,31 @@ $(document).ready(function() {
         toastr.error("L'assignatura " + assig + " o el seu grup son incorrectes");
       }
     }
-    chrome.storage.sync.set(save, function() {
-        //console.log('Settings saved: ' + JSON.stringify(save));
-    });
+    chrome.storage.sync.set(save);
   }
 
   //Retrieve data from the webpage
   function retrieveData() {
     var xhr = new XMLHttpRequest();
-    var url = "http://46.101.250.23:8080/data";
-    xhr.open("GET", url, false);
+    var url1 = "http://www.fib.upc.edu/fib/estudiar-enginyeria-informatica/matricula/lliures/lliuresGRAU.html";
+    var url2 = "http://www.fib.upc.edu/fib/estudiar-enginyeria-informatica/matricula/lliures/lliuresFS.html";
+    var assigs1, assigs2;
+    xhr.open("GET", url1, false);
     xhr.onreadystatechange = function() {
-      //console.log("mida resposta: " + xhr.responseText.length);
-      assigs = JSON.parse(xhr.response);
-      //console.log("resposta:" + assigs);
+      console.log("mida resposta: " + xhr.responseText.length);
+      assigs1 = buildDataJSON(xhr.responseText);
+      console.log(assigs1);
     }
     xhr.send();
+    xhr.open("GET", url2, false);
+    xhr.onreadystatechange = function() {
+      console.log("mida resposta: " + xhr.responseText.length);
+      assigs2 = buildDataJSON(xhr.responseText);
+      console.log(assigs2);
+    }
+    xhr.send();
+    assigs = assigs1["assigs"].concat(assigs2["assigs"]);
+    console.log(assigs);
   }
 
   //Called each time we add a new alement to the table
