@@ -2,22 +2,22 @@
 	"manifest_version": 2,
 	"name": "Places Lliures",
 	"description": "Gaudeix veient com es van omplint les places dels grups que vols.",
-	"version": "1.0",
+	"version": "1.1",
 	"permissions": [
 		"storage",
 		"http://46.101.250.23:8080/data",
 		"http://www.fib.upc.edu/fib/estudiar-enginyeria-informatica/matricula/lliures/lliuresFS.html",
 		"http://www.fib.upc.edu/fib/estudiar-enginyeria-informatica/matricula/lliures/lliuresGRAU.html"
 	],
-	"icons": { 
+	"icons": {
 		"16": "img/icon16.png",
 		"48": "img/icon48.png",
-		"128": "img/icon128.png" 
+		"128": "img/icon128.png"
 	},
 	"browser_action": {
-		"default_icon": {                    
-			"19": "img/icon48.png",          
-			"38": "img/icon48.png"          
+		"default_icon": {
+			"19": "img/icon48.png",
+			"38": "img/icon48.png"
 		},
 		"default_popup": "popup.html"
 	},
