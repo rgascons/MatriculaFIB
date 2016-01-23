@@ -37,7 +37,7 @@ function fetchData () {
 	xhr1.send();
 }
 
-setInterval(function(){ fetchData() }, 60*60*1000);
+setInterval(function(){ fetchData() }, 1*60*1000);
 fetchData();
 
 app.get('/data', function(req, res, next) {

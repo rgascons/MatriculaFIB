@@ -2,7 +2,7 @@
 	"manifest_version": 2,
 	"name": "Places Lliures",
 	"description": "Gaudeix veient com es van omplint les places dels grups que vols.",
-	"version": "1.1",
+	"version": "1.2",
 	"permissions": [
 		"storage",
 		"http://46.101.250.23:8080/data",
