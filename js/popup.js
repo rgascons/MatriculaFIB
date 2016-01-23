@@ -18,9 +18,19 @@ $(document).ready(function() {
     var allKeys = Object.keys(items);
     if (!jQuery.isEmptyObject(items)) {
       $.each(items, function(j, item) {
-        $('#assig' + numberOfAssigs).html("<td>" + (numberOfAssigs + 1) +
-          "<td>" + items[j].assigName + "</td><td>" + items[j].grupVal + "</td><td>" + items[j].placesLliures + "</td><td>" + items[j].placesTotals + "</td>");
-        $('#subjectsTable').append('<tr id="assig' + (numberOfAssigs + 1) + '"></tr>');
+        var newRow = '<tr id="assig' + j + '">' +
+                       "<td>" + (numberOfAssigs + 1) + "</td>" +
+                       "<td>" + item.assigName + "</td>"+
+                       "<td>" + item.grupVal + "</td>"+
+                       "<td>" + item.placesLliures + "</td>"+
+                       "<td>" + item.placesTotals + "</td>" +
+                     "</tr>";
+
+        $('#subjectsTable').append(newRow);
+        // Old version
+        // $('#assig' + j).html("<td>" + (j + 1) +
+        //   "<td>" + items[j].assigName + "</td><td>" + items[j].grupVal + "</td><td>" + items[j].placesLliures + "</td><td>" + items[j].placesTotals + "</td>");
+        // $('#subjectsTable').append('<tr id="assig' + (j + 1) + '"></tr>');
         numberOfAssigs++;
       })
       retrieveData();
@@ -72,7 +82,7 @@ $(document).ready(function() {
               var grupVal = grup;
               var contingutAssig = { assigName, grupVal, placesLliures, placesTotals };
               //console.log(contingutAssig);
-              save["assig" + (p-1)] = contingutAssig;
+              save[(p-1)] = contingutAssig;
             }
           }
         }
