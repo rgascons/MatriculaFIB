@@ -24,13 +24,10 @@ $(document).ready(function() {
                        "<td>" + item.grupVal + "</td>"+
                        "<td>" + item.placesLliures + "</td>"+
                        "<td>" + item.placesTotals + "</td>" +
+                       "<td>" + "<button row='"+ j +"' type='button' class='btn btn-danger delBtn'> x </button>" + "</td>" +
                      "</tr>";
 
         $('#subjectsTable').append(newRow);
-        // Old version
-        // $('#assig' + j).html("<td>" + (j + 1) +
-        //   "<td>" + items[j].assigName + "</td><td>" + items[j].grupVal + "</td><td>" + items[j].placesLliures + "</td><td>" + items[j].placesTotals + "</td>");
-        // $('#subjectsTable').append('<tr id="assig' + (j + 1) + '"></tr>');
         numberOfAssigs++;
       })
       retrieveData();
@@ -47,14 +44,18 @@ $(document).ready(function() {
   }
 
   function updateHTML(assigName, grupVal) {
-    $('#assig' + numberOfAssigs).html("<td>" + (numberOfAssigs + 1) + "<td>" + assigName + "</td><td>" + grupVal + "</td><td>" +
-      undefined + "</td><td>" + undefined + "</td>");
-    //Avoiding duplicate IDs
-    if (!document.getElementById('assig' + (numberOfAssigs + 1))) {
-      $('#subjectsTable').append('<tr id="assig' + (numberOfAssigs + 1) + '"></tr>');
-      //console.log('Number of assigs' + numberOfAssigs);
-      numberOfAssigs++;
-    }
+    // if (!document.getElementById('assig' + (numberOfAssigs))) {
+    var newRow = '<tr id="assig' + numberOfAssigs + '">' +
+                   "<td>" + (numberOfAssigs + 1) + "</td>" +
+                   "<td>" + assigName + "</td>"+
+                   "<td>" + grupVal + "</td>"+
+                   "<td>" + undefined + "</td>"+
+                   "<td>" + undefined + "</td>" +
+                   "<td>" + "<button row='"+ numberOfAssigs +"' type='button' class='btn btn-danger delBtn'> x </button>" + "</td>" +
+                 "</tr>";
+
+    $('#subjectsTable').append(newRow);
+    numberOfAssigs++;
   }
 
   var assigs = {};
@@ -62,7 +63,7 @@ $(document).ready(function() {
   function refreshTable () {
     var save = {};
     var table = document.getElementById('subjectsTable');
-    for (var p = 1; p < table.rows.length-1; ++p) {
+    for (var p = 1; p < table.rows.length; ++p) {
       //console.log(table.rows[i].innerHTML);
       var assig = table.rows[p].cells[1].innerHTML;
       var grup = table.rows[p].cells[2].innerHTML;
@@ -76,8 +77,8 @@ $(document).ready(function() {
               isValid = true;
               placesLliures = grups[r]["placesLliures"];
               placesTotals = grups[r]["placesTotals"];
-              table.rows[p].cells[3].innerHTML = grups[r]["placesLliures"];
-              table.rows[p].cells[4].innerHTML = grups[r]["placesTotals"];
+              table.rows[p].cells[3].innerHTML = placesLliures;
+              table.rows[p].cells[4].innerHTML = placesTotals;
               var assigName = assig;
               var grupVal = grup;
               var contingutAssig = { assigName, grupVal, placesLliures, placesTotals };
@@ -86,7 +87,6 @@ $(document).ready(function() {
             }
           }
         }
-        //if (as["nomAssig"] == assig) console.log(ass["grups"].length);
       }
       if(!isValid) {
         toastr.options = {
@@ -96,7 +96,8 @@ $(document).ready(function() {
           "hideDuration": "500",
           "timeOut": "2000"
         }
-        toastr.error("L'assignatura " + assig + " o el seu grup son incorrectes");
+        table.deleteRow(p);
+        toastr.error("L'assignatura " + assig + " o el seu grup són incorrectes o no s'ofereixen.");
       }
     }
     chrome.storage.sync.set(save);
@@ -105,22 +106,22 @@ $(document).ready(function() {
   //Retrieve data from the webpage
   function retrieveData() {
     var xhr = new XMLHttpRequest();
-    var url1 = "http://www.fib.upc.edu/fib/estudiar-enginyeria-informatica/matricula/lliures/lliuresGRAU.html";
-    var url2 = "http://www.fib.upc.edu/fib/estudiar-enginyeria-informatica/matricula/lliures/lliuresFS.html";
+    var url2 = "http://www.fib.upc.edu/fib/estudiar-enginyeria-informatica/matricula/lliures/lliuresGRAU.html";
+    var url1 = "http://www.fib.upc.edu/fib/estudiar-enginyeria-informatica/matricula/lliures/lliuresFS.html";
     var assigs1, assigs2;
     xhr.open("GET", url1, false);
     xhr.onreadystatechange = function() {
       console.log("mida resposta: " + xhr.responseText.length);
       assigs1 = buildDataJSON(xhr.responseText);
       console.log(assigs1);
-    }
+    };
     xhr.send();
     xhr.open("GET", url2, false);
     xhr.onreadystatechange = function() {
       console.log("mida resposta: " + xhr.responseText.length);
       assigs2 = buildDataJSON(xhr.responseText);
       console.log(assigs2);
-    }
+    };
     xhr.send();
     assigs = assigs1["assigs"].concat(assigs2["assigs"]);
     console.log(assigs);
@@ -130,26 +131,18 @@ $(document).ready(function() {
   function addNewRow() {
     var inputVal = $("#inputAssig").val().toUpperCase();
     var grupVal = $("#inputGrup").val();
+    toastr.options = {
+      "newestOnTop": true,
+      "positionClass": "toast-bottom-center",
+      "preventDuplicates": true,
+      "showDuration": "150",
+      "hideDuration": "500",
+      "timeOut": "2000"
+    };
     if (inputVal.length <= 0) {
-      toastr.options = {
-        "newestOnTop": true,
-        "positionClass": "toast-bottom-center",
-        "preventDuplicates": true,
-        "showDuration": "150",
-        "hideDuration": "500",
-        "timeOut": "2000"
-      }
       toastr.error("El camp d'entrada està buit");
       return false;
     } else if (grupVal < 10 || grupVal > 99) {
-      toastr.options = {
-        "newestOnTop": true,
-        "positionClass": "toast-bottom-center",
-        "preventDuplicates": true,
-        "showDuration": "150",
-        "hideDuration": "500",
-        "timeOut": "2000"
-      }
       toastr.error("Grup conté un valor incorrecte");
       return false;
     } else {
@@ -193,16 +186,15 @@ $(document).ready(function() {
     });
     $(this).find('input[type=submit]').hide();
   });
-  //Delete last row
-  $("#delBtn").click(function() {
-    if (numberOfAssigs > 0) {
-      $("#assig" + (numberOfAssigs - 1)).html('');
-      chrome.storage.sync.remove('assig' + (numberOfAssigs - 1));
-      numberOfAssigs--;
-    }
+
+  $(document).on('click', 'button.delBtn', function () {
+    var rowIndex = $(this).attr('row');
+    $('#assig' + rowIndex).remove();
+    chrome.storage.sync.remove(rowIndex);
+    --numberOfAssigs;
+    return false;
   });
 });
-
 window.onload = function() {
   var inputAssig = document.getElementById('inputAssig');
   inputAssig.focus();
