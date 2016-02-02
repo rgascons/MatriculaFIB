@@ -12,6 +12,7 @@ $(document).ready(function() {
   });
   //Number of elements
   var numberOfAssigs = 0;
+  var justPressed = false;
 
   //Get all data and add it, if any, and update it to the latest results
   chrome.storage.sync.get(null, function(items) {
@@ -111,20 +112,20 @@ $(document).ready(function() {
     var assigs1, assigs2;
     xhr.open("GET", url1, false);
     xhr.onreadystatechange = function() {
-      console.log("mida resposta: " + xhr.responseText.length);
+      //console.log("mida resposta: " + xhr.responseText.length);
       assigs1 = buildDataJSON(xhr.responseText);
-      console.log(assigs1);
+      //console.log(assigs1);
     };
     xhr.send();
     xhr.open("GET", url2, false);
     xhr.onreadystatechange = function() {
-      console.log("mida resposta: " + xhr.responseText.length);
+      //console.log("mida resposta: " + xhr.responseText.length);
       assigs2 = buildDataJSON(xhr.responseText);
-      console.log(assigs2);
+      //console.log(assigs2);
     };
     xhr.send();
     assigs = assigs1["assigs"].concat(assigs2["assigs"]);
-    console.log(assigs);
+    //console.log(assigs);
   }
 
   //Called each time we add a new alement to the table
@@ -162,15 +163,19 @@ $(document).ready(function() {
   });
 
   $("#refreshBtn").click(function() {
-    refreshTable();
-    toastr.options = {
-      "newestOnTop": true,
-      "positionClass": "toast-bottom-center",
-      "showDuration": "150",
-      "hideDuration": "500",
-      "timeOut": "2000"
+    if (!justPressed) {
+      refreshTable();
+      justPressed = true;
+      setTimeout(() => {justPressed = false;}, 1000);
+      toastr.options = {
+        "newestOnTop": true,
+        "positionClass": "toast-bottom-center",
+        "showDuration": "150",
+        "hideDuration": "500",
+        "timeOut": "2000"
+      }
+      toastr.info("Dades recarregades amb èxit");
     }
-    toastr.info("Dades recarregades amb èxit");
   });
 
   $("#assigForm").each(function() {
