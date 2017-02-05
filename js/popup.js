@@ -36,14 +36,6 @@ $(document).ready(function() {
     }
   });
 
-  function buildDataJSON(html) {
-    html = html.trim();
-    html = html.substring(html.search("{\"data\"")).trim();
-    html = html.substring(0, html.search("]}]}") + "]}]}".length).trim();
-    data = JSON.parse(html);
-    return data;
-  }
-
   function updateHTML(assigName, grupVal) {
     // if (!document.getElementById('assig' + (numberOfAssigs))) {
     var newRow = '<tr id="assig' + numberOfAssigs + '">' +
@@ -70,23 +62,17 @@ $(document).ready(function() {
       var grup = table.rows[p].cells[2].innerHTML;
       var isValid = false;
       for (var q = 0; q < assigs.length; ++q) {
-        //console.log(a[q]["nomAssig"]);
-        if (assigs[q]["nomAssig"] == assig) {
-          grups = assigs[q]["grups"];
-          for (var r = 0; r < grups.length; ++r) {
-            if (grups[r]["tipusGrup"] == "N" && grups[r]["nom"] == grup) {
-              isValid = true;
-              placesLliures = grups[r]["placesLliures"];
-              placesTotals = grups[r]["placesTotals"];
-              table.rows[p].cells[3].innerHTML = placesLliures;
-              table.rows[p].cells[4].innerHTML = placesTotals;
-              var assigName = assig;
-              var grupVal = grup;
-              var contingutAssig = { assigName, grupVal, placesLliures, placesTotals };
-              //console.log(contingutAssig);
-              save[(p-1)] = contingutAssig;
-            }
-          }
+        if (assigs[q]["assig"] == assig && assigs[q]["grup"] == grup && assigs[q]["tipus_grup"] == "N") {
+            isValid = true;
+            placesLliures = assigs[q]["places_lliures"];
+            placesTotals = assigs[q]["places_totals"];
+            table.rows[p].cells[3].innerHTML = placesLliures;
+            table.rows[p].cells[4].innerHTML = placesTotals;
+            var assigName = assig;
+            var grupVal = grup;
+            var contingutAssig = { assigName, grupVal, placesLliures, placesTotals };
+            //console.log(contingutAssig);
+            save[(p-1)] = contingutAssig;
         }
       }
       if(!isValid) {
@@ -95,7 +81,7 @@ $(document).ready(function() {
           "positionClass": "toast-bottom-center",
           "showDuration": "150",
           "hideDuration": "500",
-          "timeOut": "2000"
+          "timeOut": "4000"
         }
         table.deleteRow(p);
         toastr.error("L'assignatura " + assig + " o el seu grup són incorrectes o no s'ofereixen.");
@@ -107,25 +93,13 @@ $(document).ready(function() {
   //Retrieve data from the webpage
   function retrieveData() {
     var xhr = new XMLHttpRequest();
-    var url2 = "http://www.fib.upc.edu/fib/estudiar-enginyeria-informatica/matricula/lliures/lliuresGRAU.html";
-    var url1 = "http://www.fib.upc.edu/fib/estudiar-enginyeria-informatica/matricula/lliures/lliuresFS.html";
-    var assigs1, assigs2;
-    xhr.open("GET", url1, false);
+    xhr.overrideMimeType("application/json");
+    var url = "https://api.fib.upc.edu/v2/assignatures/places/?format=json";
+    xhr.open("GET", url, false);
     xhr.onreadystatechange = function() {
-      //console.log("mida resposta: " + xhr.responseText.length);
-      assigs1 = buildDataJSON(xhr.responseText);
-      //console.log(assigs1);
+      assigs = JSON.parse(xhr.responseText).results;
     };
     xhr.send();
-    xhr.open("GET", url2, false);
-    xhr.onreadystatechange = function() {
-      //console.log("mida resposta: " + xhr.responseText.length);
-      assigs2 = buildDataJSON(xhr.responseText);
-      //console.log(assigs2);
-    };
-    xhr.send();
-    assigs = assigs1["assigs"].concat(assigs2["assigs"]);
-    //console.log(assigs);
   }
 
   //Called each time we add a new alement to the table
