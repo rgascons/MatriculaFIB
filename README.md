@@ -15,5 +15,5 @@ Chrome extension to make things easier for UPC-FIB students during the course en
  + [Chrome-Extension-Twitter-Bootstrap-3-Template](https://github.com/Ehesp/Chrome-Extension-Twitter-Bootstrap-3-Template)
 
 ### Authors
- + [Ricard Gascons](https://github.com/mindula/)
- + [ghastgar](https://github.com/ghastgar)
+ + [Ricard Gascons](https://github.com/rgascons/)
+ + [Pau Oliver](https://github.com/ofpau)
