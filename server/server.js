@@ -2,7 +2,8 @@
 
 var express = require('express');
 var http = require('http');
-var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
+var xmlLib = require("xmlhttprequest");
+var XMLHttpRequest = xmlLib.XMLHttpRequest;
 
 var app = express();
 
